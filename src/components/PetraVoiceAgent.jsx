@@ -1,11 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useConversation } from '@elevenlabs/react';
+import { useState, useCallback } from 'react';
+import { useConversation, ConversationProvider } from '@elevenlabs/react';
 import { Phone, PhoneOff, Mic, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const AGENT_ID = 'agent_4101knsvze4ff5398rbghyjs6016';
 
-export default function PetraVoiceAgent({ isOpen, onClose, patientContext }) {
+function PetraInner({ isOpen, onClose, patientContext }) {
   const [micError, setMicError] = useState(false);
 
   const conversation = useConversation({
@@ -171,5 +171,13 @@ export default function PetraVoiceAgent({ isOpen, onClose, patientContext }) {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PetraVoiceAgent(props) {
+  return (
+    <ConversationProvider>
+      <PetraInner {...props} />
+    </ConversationProvider>
   );
 }
