@@ -32,10 +32,12 @@ export default function Layout({ children }) {
         {/* Logo */}
         <div className="px-6 py-5 border-b border-white/10">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-teal flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="white" opacity="0.2"/>
-                <path d="M7 12l3 3 7-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal to-[#0d9488] flex items-center justify-center shrink-0 shadow-[0_0_16px_rgba(20,184,166,0.45)]">
+              <svg viewBox="0 0 32 32" fill="none" className="w-6 h-6">
+                {/* Heart with pulse */}
+                <path d="M16 26s-9-5.5-9-12a6 6 0 0 1 9-5.2A6 6 0 0 1 25 14c0 6.5-9 12-9 12z" fill="white" opacity="0.15"/>
+                <path d="M16 26s-9-5.5-9-12a6 6 0 0 1 9-5.2A6 6 0 0 1 25 14c0 6.5-9 12-9 12z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+                <polyline points="8,16 11,16 13,12 16,20 19,14 21,16 24,16" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
               </svg>
             </div>
             <div>
@@ -93,9 +95,11 @@ export default function Layout({ children }) {
       {/* Mobile top bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-[#0F172A] border-b border-white/10 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-teal flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4">
-              <path d="M7 12l3 3 7-7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal to-[#0d9488] flex items-center justify-center shadow-[0_0_10px_rgba(20,184,166,0.4)]">
+            <svg viewBox="0 0 32 32" fill="none" className="w-5 h-5">
+              <path d="M16 26s-9-5.5-9-12a6 6 0 0 1 9-5.2A6 6 0 0 1 25 14c0 6.5-9 12-9 12z" fill="white" opacity="0.15"/>
+              <path d="M16 26s-9-5.5-9-12a6 6 0 0 1 9-5.2A6 6 0 0 1 25 14c0 6.5-9 12-9 12z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+              <polyline points="8,16 11,16 13,12 16,20 19,14 21,16 24,16" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
             </svg>
           </div>
           <span className="font-extrabold text-white text-sm">VitaCore</span>
