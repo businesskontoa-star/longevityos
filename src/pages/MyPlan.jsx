@@ -58,19 +58,29 @@ export default function MyPlan() {
           Schedule consultation at Centrum Health
         </button>
       </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-700">{item.title}</p>
-                  <div className="flex items-center gap-2 mt-1 flex-wrap">
-                    <span className={cn("text-xs font-semibold px-2 py-0.5 rounded-full", priorityBadge[item.priority])}>{item.priority} priority</span>
-                    <span className={cn("text-xs font-semibold px-2 py-0.5 rounded-full", statusBadge[item.status])}>{item.status}</span>
-                    {item.clinic && <span className="text-xs text-slate-400 font-medium">· Clinic</span>}
-                  </div>
-                </div>
-                <ChevronRight size={15} className="text-slate-300 group-hover:text-teal-500 transition-colors shrink-0" />
+
+      {/* All items */}
+      <div className="rounded-2xl border border-slate-100 bg-white shadow-sm divide-y divide-slate-50">
+        {plan.map((item, i) => {
+          const cfg = typeConfig[item.type] || typeConfig.program;
+          const Icon = cfg.icon;
+          return (
+            <div key={i} className="flex items-center gap-4 p-4 group cursor-pointer hover:bg-slate-50 transition-all first:rounded-t-2xl last:rounded-b-2xl">
+              <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shrink-0", cfg.bg)}>
+                <Icon size={16} className={cfg.color} />
               </div>
-            );
-          })}
-        </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-slate-700">{item.title}</p>
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
+                  <span className={cn("text-xs font-semibold px-2 py-0.5 rounded-full", priorityBadge[item.priority])}>{item.priority} priority</span>
+                  <span className={cn("text-xs font-semibold px-2 py-0.5 rounded-full", statusBadge[item.status])}>{item.status}</span>
+                  {item.clinic && <span className="text-xs text-slate-400 font-medium">· Clinic</span>}
+                </div>
+              </div>
+              <ChevronRight size={15} className="text-slate-300 group-hover:text-teal-500 transition-colors shrink-0" />
+            </div>
+          );
+        })}
       </div>
 
       <ScheduleModal
