@@ -1,127 +1,91 @@
 import { mockPatient } from '@/lib/mockData';
 import LabRow from '@/components/LabRow';
-import LongevityScoreCard from '@/components/LongevityScoreCard';
 import InsightCard from '@/components/InsightCard';
-import { CheckCircle2, Clock, AlertTriangle, Calendar } from 'lucide-react';
+import { CheckCircle2, Clock, AlertTriangle } from 'lucide-react';
 
 export default function Patient360() {
   const p = mockPatient;
 
   return (
-    <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-8">
+    <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
       {/* Header */}
-      <div className="rounded-2xl border border-border bg-card/80 p-6 flex flex-col md:flex-row md:items-center gap-6">
-        <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center text-primary text-2xl font-bold shrink-0">
+      <div className="rounded-2xl border border-slate-100 bg-white shadow-sm p-6 flex flex-col md:flex-row md:items-center gap-5">
+        <div className="w-16 h-16 rounded-2xl bg-[#0F172A] flex items-center justify-center text-white text-xl font-extrabold shrink-0">
           {p.name.split(' ').map(n => n[0]).join('')}
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl font-bold text-foreground">{p.name}</h1>
-            <span className="px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-400 text-xs font-medium">Needs Attention</span>
+            <h1 className="text-xl font-extrabold text-[#0F172A]">{p.name}</h1>
+            <span className="px-2 py-0.5 rounded-full bg-red-50 text-red-600 text-xs font-bold">Action Required</span>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">Age {p.age} · {p.sex} · {p.clinic}</p>
-          <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-            <span>Last visit: {p.lastVisit}</span>
-            <span>·</span>
-            <span>Next: {p.nextMilestoneDate}</span>
-          </div>
+          <p className="text-sm text-slate-400 mt-1">Age {p.age} · {p.sex} · {p.country} · {p.clinic}</p>
+          <p className="text-xs text-slate-400 mt-1">Diagnoses: {p.diagnoses.join(' · ')}</p>
         </div>
         <div className="flex gap-3 flex-wrap">
-          <div className="rounded-xl border border-border bg-secondary px-4 py-2 text-center">
-            <p className="text-xs text-muted-foreground">Longevity Score</p>
-            <p className="text-2xl font-bold text-foreground">{p.longevityScore}</p>
+          <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-3 text-center shadow-sm">
+            <p className="text-xs font-bold text-slate-400 uppercase">Longevity</p>
+            <p className="text-3xl font-extrabold text-[#0F172A]">{p.longevityScore}</p>
           </div>
-          <div className="rounded-xl border border-border bg-secondary px-4 py-2 text-center">
-            <p className="text-xs text-muted-foreground">Bio Age</p>
-            <p className="text-2xl font-bold text-red-400">{p.biologicalAge}</p>
+          <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-center shadow-sm">
+            <p className="text-xs font-bold text-red-400 uppercase">Bio Age</p>
+            <p className="text-3xl font-extrabold text-red-500">{p.biologicalAge}</p>
           </div>
         </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-4">
-        {/* AI Insight */}
         <div className="space-y-4">
-          <div className="rounded-2xl border border-border bg-card/80 p-5">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">AI Insight</p>
+          <div className="rounded-2xl border border-slate-100 bg-white shadow-sm p-5">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">AI Insight</p>
             <InsightCard insight={p.todayInsight} />
           </div>
 
-          {/* Risk flags */}
-          <div className="rounded-2xl border border-border bg-card/80 p-5">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Risk & Opportunity Flags</p>
-            <div className="space-y-2">
+          <div className="rounded-2xl border border-slate-100 bg-white shadow-sm p-5">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Risk & Opportunity Flags</p>
+            <div className="space-y-2.5">
               {[
-                { label: 'LDL + hsCRP co-elevation', type: 'risk', severity: 'medium' },
-                { label: 'Sleep deficit (avg 5.9h)', type: 'risk', severity: 'high' },
-                { label: 'Vitamin D insufficiency', type: 'risk', severity: 'medium' },
-                { label: 'Recovery program opportunity', type: 'opportunity', severity: 'high' },
-                { label: 'Lab repeat due in 30 days', type: 'action', severity: 'medium' },
+                { label: 'HbA1c 7.6% — above diabetic target', type: 'risk', severity: 'high' },
+                { label: 'LDL 4.44 mmol/L — 70% above target', type: 'risk', severity: 'high' },
+                { label: 'Low daily activity (5,240 steps/day)', type: 'risk', severity: 'medium' },
+                { label: 'HRV 24.2ms — recovery under pressure', type: 'risk', severity: 'medium' },
+                { label: 'Metabolic programme opportunity', type: 'opportunity', severity: 'high' },
+                { label: 'Statin dose review overdue', type: 'action', severity: 'high' },
               ].map((flag, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full shrink-0 ${
-                    flag.type === 'risk' ? flag.severity === 'high' ? 'bg-red-400' : 'bg-amber-400' :
-                    flag.type === 'opportunity' ? 'bg-primary' : 'bg-blue-400'
-                  }`} />
-                  <p className="text-sm text-foreground">{flag.label}</p>
-                  <span className={`ml-auto text-xs px-2 py-0.5 rounded-full font-medium ${
-                    flag.type === 'risk' ? 'bg-red-400/10 text-red-400' :
-                    flag.type === 'opportunity' ? 'bg-primary/10 text-primary' : 'bg-blue-400/10 text-blue-400'
-                  }`}>{flag.type}</span>
+                  <div className={`w-2 h-2 rounded-full shrink-0 ${flag.type === 'risk' ? flag.severity === 'high' ? 'bg-red-500' : 'bg-amber-400' : flag.type === 'opportunity' ? 'bg-teal-500' : 'bg-blue-500'}`} />
+                  <p className="text-sm text-slate-600 flex-1">{flag.label}</p>
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full shrink-0 ${flag.type === 'risk' ? 'bg-red-50 text-red-600' : flag.type === 'opportunity' ? 'bg-teal-50 text-teal-600' : 'bg-blue-50 text-blue-600'}`}>
+                    {flag.type}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Labs */}
-        <div className="rounded-2xl border border-border bg-card/80 overflow-hidden">
-          <div className="p-5 border-b border-border">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Latest Labs</p>
+        <div className="rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+          <div className="p-5 border-b border-slate-50 bg-slate-50/50">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Latest Labs</p>
           </div>
-          <div className="p-5">
-            {p.labs.slice(0, 5).map(lab => <LabRow key={lab.name} lab={lab} />)}
-          </div>
+          <div className="p-5">{p.labs.map(lab => <LabRow key={lab.name} lab={lab} />)}</div>
         </div>
       </div>
 
-      {/* Plan adherence */}
-      <div className="rounded-2xl border border-border bg-card/80 p-5">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Recommended Actions & Status</p>
+      {/* Plan */}
+      <div className="rounded-2xl border border-slate-100 bg-white shadow-sm p-5">
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Recommended Actions & Status</p>
         <div className="space-y-3">
           {p.plan.active.map((item, i) => (
-            <div key={i} className="flex items-center justify-between gap-3 py-2 border-b border-border last:border-0">
+            <div key={i} className="flex items-center justify-between gap-3 py-2 border-b border-slate-50 last:border-0">
               <div className="flex items-center gap-3">
-                {item.status === 'scheduled' ? (
-                  <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
-                ) : item.status === 'due' ? (
-                  <AlertTriangle size={14} className="text-red-400 shrink-0" />
-                ) : (
-                  <Clock size={14} className="text-muted-foreground shrink-0" />
-                )}
-                <p className="text-sm text-foreground">{item.title}</p>
+                {item.status === 'scheduled' ? <CheckCircle2 size={14} className="text-emerald-500 shrink-0" /> :
+                 item.status === 'due' ? <AlertTriangle size={14} className="text-red-500 shrink-0" /> :
+                 <Clock size={14} className="text-slate-300 shrink-0" />}
+                <p className="text-sm text-slate-600">{item.title}</p>
               </div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded-full shrink-0 ${
-                item.status === 'scheduled' ? 'bg-emerald-400/10 text-emerald-400' :
-                item.status === 'due' ? 'bg-red-400/10 text-red-400' :
-                'bg-secondary text-muted-foreground'
-              }`}>{item.status}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Journey milestones */}
-      <div className="rounded-2xl border border-border bg-card/80 p-5">
-        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Care Journey</p>
-        <div className="space-y-3">
-          {p.journeyMilestones.map((m, i) => (
-            <div key={i} className="flex items-center gap-3 py-2 border-b border-border last:border-0">
-              <div className={`w-2 h-2 rounded-full shrink-0 ${
-                m.status === 'completed' ? 'bg-emerald-400' :
-                m.status === 'upcoming' ? 'bg-amber-400' : 'bg-muted-foreground'
-              }`} />
-              <p className="text-sm text-foreground flex-1">{m.event}</p>
-              <span className="text-xs text-muted-foreground shrink-0">{m.date}</span>
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-full shrink-0 ${item.status === 'scheduled' ? 'bg-emerald-50 text-emerald-600' : item.status === 'due' ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-400'}`}>
+                {item.status}
+              </span>
             </div>
           ))}
         </div>

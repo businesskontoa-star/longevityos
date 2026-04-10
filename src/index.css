@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,41 +6,47 @@
 
 @layer base {
   :root {
-    --background: 222 47% 6%;
-    --foreground: 210 40% 94%;
-    --card: 222 40% 10%;
-    --card-foreground: 210 40% 94%;
-    --popover: 222 40% 10%;
-    --popover-foreground: 210 40% 94%;
-    --primary: 175 70% 42%;
-    --primary-foreground: 222 47% 6%;
-    --secondary: 222 35% 16%;
-    --secondary-foreground: 210 40% 85%;
-    --muted: 222 35% 14%;
-    --muted-foreground: 215 20% 50%;
-    --accent: 38 90% 58%;
-    --accent-foreground: 222 47% 6%;
-    --destructive: 0 72% 51%;
+    /* VitaCore Brand — Light Theme */
+    --background: 210 40% 98%;         /* #F8FAFC Soft Cloud */
+    --foreground: 222 47% 8%;          /* #0F172A Deep Navy */
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 8%;
+    --primary: 172 82% 39%;            /* #14B8A6 Vital Teal */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 25%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 38 92% 50%;              /* #F59E0B Signal Amber */
+    --accent-foreground: 222 47% 8%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 222 30% 16%;
-    --input: 222 30% 16%;
-    --ring: 175 70% 42%;
-    --chart-1: 175 70% 42%;
-    --chart-2: 38 90% 58%;
-    --chart-3: 262 60% 65%;
-    --chart-4: 340 75% 60%;
-    --chart-5: 200 80% 55%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 172 82% 39%;
+    --chart-1: 172 82% 39%;            /* Teal */
+    --chart-2: 142 71% 45%;            /* #22C55E Action Green */
+    --chart-3: 221 83% 53%;            /* #1D4ED8 Core Blue */
+    --chart-4: 38 92% 50%;             /* Amber */
+    --chart-5: 0 84% 60%;
     --radius: 0.75rem;
-    --sidebar-background: 222 47% 6%;
+    --sidebar-background: 222 47% 8%;
     --sidebar-foreground: 210 40% 94%;
-    --sidebar-primary: 175 70% 42%;
-    --sidebar-primary-foreground: 222 47% 6%;
-    --sidebar-accent: 222 35% 14%;
+    --sidebar-primary: 172 82% 39%;
+    --sidebar-primary-foreground: 222 47% 8%;
+    --sidebar-accent: 222 40% 14%;
     --sidebar-accent-foreground: 210 40% 94%;
-    --sidebar-border: 222 30% 16%;
-    --sidebar-ring: 175 70% 42%;
-    --font-inter: 'Inter', sans-serif;
-    --font-serif: 'DM Serif Display', serif;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 172 82% 39%;
+    --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    --font-serif: 'Plus Jakarta Sans', sans-serif;
+    --navy: 222 47% 8%;
+    --teal: 172 82% 39%;
+    --blue: 221 83% 53%;
+    --green: 142 71% 45%;
+    --amber: 38 92% 50%;
   }
 }
 

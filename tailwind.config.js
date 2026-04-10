@@ -5,8 +5,15 @@ module.exports = {
   theme: {
   	extend: {
   		fontFamily: {
-  			inter: ['var(--font-inter)'],
+  			sans: ['var(--font-sans)'],
   			serif: ['var(--font-serif)'],
+  		},
+  		colors: {
+  			navy: 'hsl(var(--navy))',
+  			teal: 'hsl(var(--teal))',
+  			vblue: 'hsl(var(--blue))',
+  			vgreen: 'hsl(var(--green))',
+  			vamber: 'hsl(var(--amber))',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
