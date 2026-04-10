@@ -5,7 +5,19 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-// Add page imports here
+import Layout from './components/Layout';
+import { Outlet } from 'react-router-dom';
+import Home from './pages/Home';
+import MyHealth from './pages/MyHealth';
+import MyFuture from './pages/MyFuture';
+import MyPlan from './pages/MyPlan';
+import Coach from './pages/Coach';
+import Journey from './pages/Journey';
+import ClinicOverview from './pages/clinic/ClinicOverview';
+import ClinicSegments from './pages/clinic/ClinicSegments';
+import ClinicFunnel from './pages/clinic/ClinicFunnel';
+import ClinicOpportunities from './pages/clinic/ClinicOpportunities';
+import Patient360 from './pages/clinic/Patient360';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -33,7 +45,19 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      {/* Add your page Route elements here */}
+      <Route element={<Layout><Outlet /></Layout>}>
+        <Route path="/" element={<Home />} />
+        <Route path="/my-health" element={<MyHealth />} />
+        <Route path="/my-future" element={<MyFuture />} />
+        <Route path="/my-plan" element={<MyPlan />} />
+        <Route path="/coach" element={<Coach />} />
+        <Route path="/journey" element={<Journey />} />
+        <Route path="/clinic" element={<ClinicOverview />} />
+        <Route path="/clinic/segments" element={<ClinicSegments />} />
+        <Route path="/clinic/funnel" element={<ClinicFunnel />} />
+        <Route path="/clinic/opportunities" element={<ClinicOpportunities />} />
+        <Route path="/clinic/patient/:id" element={<Patient360 />} />
+      </Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
