@@ -1,169 +1,71 @@
-import { useState, useCallback } from 'react';
-import { useConversation, ConversationProvider } from '@elevenlabs/react';
-import { Phone, PhoneOff, Mic, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
 
 const AGENT_ID = 'agent_4101knsvze4ff5398rbghyjs6016';
 
-function PetraInner({ isOpen, onClose, patientContext }) {
-  const [micError, setMicError] = useState(false);
+export default function PetraVoiceAgent({ isOpen, onClose }) {
+  const containerRef = useRef(null);
 
-  const conversation = useConversation({
-    onConnect: () => console.log('Petra connected'),
-    onDisconnect: () => console.log('Petra disconnected'),
-    onError: (err) => console.error('Petra error:', err),
-  });
+  useEffect(() => {
+    if (!isOpen || !containerRef.current) return;
+    // Clear and inject the widget element
+    containerRef.current.innerHTML = '';
+    const widget = document.createElement('elevenlabs-convai');
+    widget.setAttribute('agent-id', AGENT_ID);
+    widget.style.width = '100%';
+    containerRef.current.appendChild(widget);
 
-  const isConnected = conversation.status === 'connected';
-  const isConnecting = conversation.status === 'connecting';
-
-  const startCall = useCallback(async () => {
-    try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-      setMicError(false);
-      await conversation.startSession({
-        agentId: AGENT_ID,
-        overrides: patientContext ? {
-          agent: {
-            firstMessage: `Hallo! Ich bin Petra, Ihre persönliche KI-Gesundheitsbegleiterin von VitaCore. Ich sehe, dass wir einige wichtige Werte besprechen sollten — besonders Ihren HbA1c-Wert und das LDL-Cholesterin. Wie kann ich Ihnen heute helfen?`
-          }
-        } : undefined,
-      });
-    } catch (e) {
-      if (e.name === 'NotAllowedError') setMicError(true);
-      else console.error('startCall error:', e);
-    }
-  }, [conversation, patientContext]);
-
-  const endCall = useCallback(async () => {
-    await conversation.endSession();
-  }, [conversation]);
-
-  const handleClose = useCallback(() => {
-    if (isConnected) endCall();
-    onClose();
-  }, [isConnected, endCall, onClose]);
+    return () => {
+      if (containerRef.current) containerRef.current.innerHTML = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center">
-      <div className="absolute inset-0 bg-[#0F172A]/80 backdrop-blur-sm" onClick={handleClose} />
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-[#0F172A]/80 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full md:w-[420px] mx-4 mb-4 md:mb-0 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+      {/* Modal */}
+      <div className="relative w-full md:w-[440px] mx-4 mb-4 md:mb-0 rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gradient-to-b from-[#0F172A] to-[#1e293b]">
         {/* Header */}
-        <div className="bg-[#0F172A] px-5 py-3 flex items-center justify-between">
+        <div className="px-5 py-4 flex items-center justify-between border-b border-white/10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-            <span className="text-white text-xs font-semibold">VitaCore Voice</span>
+            <span className="text-white text-sm font-semibold">Petra · VitaCore AI Health Coach</span>
           </div>
-          <button onClick={handleClose} className="text-white/40 hover:text-white transition-colors">
+          <button onClick={onClose} className="text-white/40 hover:text-white transition-colors">
             <X size={18} />
           </button>
         </div>
 
-        {/* Main */}
-        <div className="bg-gradient-to-b from-[#0F172A] via-[#0F172A] to-[#1e293b] px-6 py-8 flex flex-col items-center gap-6">
+        {/* Widget container */}
+        <div className="p-6 flex flex-col items-center gap-4">
           {/* Avatar */}
-          <div className="relative">
-            {isConnected && conversation.isSpeaking && (
-              <>
-                <div className="absolute inset-0 rounded-full bg-teal-400/20 animate-ping scale-110" />
-                <div className="absolute inset-0 rounded-full bg-teal-400/10 animate-ping scale-125" style={{ animationDelay: '0.3s' }} />
-              </>
-            )}
-            <div className={cn(
-              "relative w-32 h-32 rounded-full overflow-hidden border-4 transition-all duration-300",
-              isConnected && conversation.isSpeaking ? "border-teal-400 shadow-[0_0_40px_rgba(20,184,166,0.5)]" :
-              isConnected ? "border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.1)]" :
-              "border-white/10"
-            )}>
-              <div className="w-full h-full bg-gradient-to-b from-[#f5deb3] to-[#e8c99a] flex items-end justify-center overflow-hidden">
-                <div className="relative w-full h-full flex flex-col items-center">
-                  <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-[#d4a843] to-[#c49a2a] rounded-t-full" />
-                  <div className="absolute top-6 left-1 w-8 h-20 bg-[#d4a843] rounded-b-full" />
-                  <div className="absolute top-6 right-1 w-8 h-20 bg-[#d4a843] rounded-b-full" />
-                  <div className="absolute top-8 left-6 right-6 bottom-8 bg-gradient-to-b from-[#fde3c8] to-[#f5c9a0] rounded-[50%]" />
-                  <div className="absolute top-14 left-9 w-3.5 h-2 bg-[#5b3d2e] rounded-full" />
-                  <div className="absolute top-14 right-9 w-3.5 h-2 bg-[#5b3d2e] rounded-full" />
-                  <div className="absolute top-14 left-10 w-1.5 h-1.5 bg-white rounded-full opacity-60" />
-                  <div className="absolute top-14 right-10 w-1.5 h-1.5 bg-white rounded-full opacity-60" />
-                  <div className="absolute top-20 left-10 right-10 h-2 border-b-2 border-[#c0706b] rounded-b-full" />
-                  <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-b from-[#14B8A6] to-[#0d9488] rounded-t-[40%]" />
-                  <div className="absolute bottom-10 left-12 right-12 h-8 bg-[#f5c9a0]" />
-                </div>
+          <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-teal-400/30 shadow-[0_0_30px_rgba(20,184,166,0.3)]">
+            <div className="w-full h-full bg-gradient-to-b from-[#f5deb3] to-[#e8c99a] flex items-end justify-center overflow-hidden">
+              <div className="relative w-full h-full flex flex-col items-center">
+                <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-[#d4a843] to-[#c49a2a] rounded-t-full" />
+                <div className="absolute top-5 left-1 w-7 h-18 bg-[#d4a843] rounded-b-full" />
+                <div className="absolute top-5 right-1 w-7 h-18 bg-[#d4a843] rounded-b-full" />
+                <div className="absolute top-7 left-5 right-5 bottom-7 bg-gradient-to-b from-[#fde3c8] to-[#f5c9a0] rounded-[50%]" />
+                <div className="absolute top-12 left-8 w-3 h-2 bg-[#5b3d2e] rounded-full" />
+                <div className="absolute top-12 right-8 w-3 h-2 bg-[#5b3d2e] rounded-full" />
+                <div className="absolute top-17 left-9 right-9 h-1.5 border-b-2 border-[#c0706b] rounded-b-full" />
+                <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-b from-[#14B8A6] to-[#0d9488] rounded-t-[40%]" />
+                <div className="absolute bottom-8 left-10 right-10 h-6 bg-[#f5c9a0]" />
               </div>
             </div>
-            {isConnected && !conversation.isSpeaking && (
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-teal-400 flex items-center justify-center shadow-lg">
-                <Mic size={14} className="text-[#0F172A]" />
-              </div>
-            )}
           </div>
 
-          {/* Name & status */}
           <div className="text-center">
-            <h2 className="text-xl font-extrabold text-white">Petra</h2>
-            <p className="text-sm text-white/50 mt-0.5">VitaCore AI Health Coach</p>
-            <div className="mt-2 flex items-center justify-center gap-2">
-              <div className={cn("w-2 h-2 rounded-full",
-                isConnected ? "bg-teal-400 animate-pulse" :
-                isConnecting ? "bg-amber-400 animate-pulse" : "bg-white/20"
-              )} />
-              <span className="text-xs text-white/60 font-medium">
-                {isConnected
-                  ? conversation.isSpeaking ? "Petra spricht..." : "Petra hört zu..."
-                  : isConnecting ? "Verbinde..."
-                  : "Bereit für Gespräch"}
-              </span>
-            </div>
+            <h2 className="text-xl font-extrabold text-white">Hallo! Ich bin Petra</h2>
+            <p className="text-sm text-white/50 mt-1">Klicken Sie auf das Mikrofon um zu starten</p>
           </div>
 
-          {/* Sound wave */}
-          {isConnected && (
-            <div className="flex items-center gap-1 h-8">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-1.5 rounded-full bg-teal-400 transition-all duration-150"
-                  style={{
-                    height: conversation.isSpeaking ? `${Math.max(6, Math.sin(i * 0.8) * 20 + 16)}px` : '6px',
-                    opacity: conversation.isSpeaking ? 0.8 : 0.3,
-                  }}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Mic error */}
-          {micError && (
-            <div className="rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-center">
-              <p className="text-sm text-red-400">Mikrofonzugriff verweigert. Bitte Erlaubnisse prüfen.</p>
-            </div>
-          )}
-
-          {/* Call button */}
-          <div className="flex flex-col items-center gap-3 w-full">
-            {!isConnected ? (
-              <button
-                onClick={startCall}
-                disabled={isConnecting}
-                className="w-16 h-16 rounded-full bg-teal-400 hover:bg-teal-300 flex items-center justify-center shadow-[0_0_30px_rgba(20,184,166,0.4)] transition-all active:scale-95 disabled:opacity-50"
-              >
-                <Phone size={24} className="text-[#0F172A]" />
-              </button>
-            ) : (
-              <button
-                onClick={endCall}
-                className="w-16 h-16 rounded-full bg-red-500 hover:bg-red-400 flex items-center justify-center shadow-[0_0_30px_rgba(239,68,68,0.4)] transition-all active:scale-95"
-              >
-                <PhoneOff size={24} className="text-white" />
-              </button>
-            )}
-            <p className="text-xs text-white/30 text-center">
-              {isConnected ? "Auflegen" : isConnecting ? "Verbinde..." : "Gespräch starten"}
-            </p>
-          </div>
+          {/* ElevenLabs widget renders here */}
+          <div ref={containerRef} className="w-full flex justify-center min-h-[80px]" />
 
           <p className="text-[10px] text-white/20 text-center leading-relaxed px-4">
             Petra ist eine KI und gibt keine medizinischen Diagnosen. Konsultieren Sie immer Ihren Arzt.
@@ -171,13 +73,5 @@ function PetraInner({ isOpen, onClose, patientContext }) {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function PetraVoiceAgent(props) {
-  return (
-    <ConversationProvider>
-      <PetraInner {...props} />
-    </ConversationProvider>
   );
 }
