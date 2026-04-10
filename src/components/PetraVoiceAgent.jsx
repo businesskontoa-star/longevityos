@@ -36,7 +36,7 @@ function PetraVoiceAgentInner({ isOpen, onClose, patientContext }) {
       setMicError(false);
       await conversation.startSession({
         agentId: AGENT_ID,
-        connectionType: 'webrtc',
+        connectionType: 'websocket',
         overrides: patientContext ? {
           agent: {
             firstMessage: `Hallo! Ich bin Petra, Ihre persönliche KI-Gesundheitsbegleiterin von VitaCore. Ich sehe, dass wir einige wichtige Werte besprechen sollten — besonders Ihren HbA1c-Wert und das LDL-Cholesterin. Wie kann ich Ihnen heute helfen?`
