@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { mockPatient } from '@/lib/mockData';
 import { Calendar, FlaskConical, Pill, Activity, ChevronRight } from 'lucide-react';
+import ScheduleModal from '@/components/ScheduleModal';
 import { cn } from '@/lib/utils';
 
 const typeConfig = {
@@ -24,6 +26,7 @@ const statusBadge = {
 export default function MyPlan() {
   const p = mockPatient;
   const plan = p.plan.active;
+  const [scheduleOpen, setScheduleOpen] = useState(false);
 
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
@@ -50,24 +53,11 @@ export default function MyPlan() {
             <p className="text-sm font-bold text-teal-600 mt-3">📈 {p.nextBestAction.estimatedImpact}</p>
           </div>
         </div>
-        <button className="mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0F172A] text-white text-sm font-bold hover:bg-slate-800 transition-all">
+        <button onClick={() => setScheduleOpen(true)} className="mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0F172A] text-white text-sm font-bold hover:bg-slate-800 transition-all">
           <Calendar size={14} />
           Schedule consultation at Centrum Health
         </button>
       </div>
-
-      {/* All items */}
-      <div>
-        <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">All Recommended Actions</h2>
-        <div className="space-y-2">
-          {plan.map(item => {
-            const type = typeConfig[item.type] || typeConfig.program;
-            const TypeIcon = type.icon;
-            return (
-              <div key={item.id} className="rounded-xl border border-slate-100 bg-white shadow-sm p-4 flex items-center gap-4 hover:border-teal-200 hover:shadow-md transition-all cursor-pointer group">
-                <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center shrink-0", type.bg)}>
-                  <TypeIcon size={16} className={type.color} />
-                </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-slate-700">{item.title}</p>
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
@@ -82,6 +72,13 @@ export default function MyPlan() {
           })}
         </div>
       </div>
+
+      <ScheduleModal
+        isOpen={scheduleOpen}
+        onClose={() => setScheduleOpen(false)}
+        title="Longevity Consultation"
+        type="consultation"
+      />
 
       <div className="rounded-2xl border border-slate-100 bg-white shadow-sm p-5">
         <h3 className="text-sm font-bold text-[#0F172A] mb-2">Why this plan matters</h3>

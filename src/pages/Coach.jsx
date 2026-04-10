@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { mockPatient } from '@/lib/mockData';
 import { askCoach } from '@/lib/agents';
-import { Send, Loader2, Sparkles } from 'lucide-react';
+import { Send, Loader2, Sparkles, Phone } from 'lucide-react';
+import PetraVoiceAgent from '@/components/PetraVoiceAgent';
 import ReactMarkdown from 'react-markdown';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +15,7 @@ const starterQuestions = [
 
 export default function Coach() {
   const p = mockPatient;
+  const [petraOpen, setPetraOpen] = useState(false);
   const [messages, setMessages] = useState([{
     role: 'assistant',
     content: `Hi ${p.firstName} 👋 I'm your VitaCore AI health coach.\n\nI've reviewed your health data — your labs, wearables, and lifestyle survey. I'm here to help you understand what it means and what to do next, always in partnership with your care team at Centrum Health.\n\nWhat would you like to explore today?`
@@ -38,6 +40,8 @@ export default function Coach() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-0px)] md:h-screen max-w-3xl mx-auto bg-[#F8FAFC]">
+      <PetraVoiceAgent isOpen={petraOpen} onClose={() => setPetraOpen(false)} patientContext={p} />
+
       {/* Header */}
       <div className="p-5 pb-4 border-b border-slate-100 bg-white shadow-sm">
         <div className="flex items-center gap-3">
@@ -48,9 +52,18 @@ export default function Coach() {
             <h1 className="text-base font-extrabold text-[#0F172A]">VitaCore Coach</h1>
             <p className="text-xs text-slate-400">AI health coach · Powered by your real health data</p>
           </div>
-          <div className="ml-auto flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-            <span className="text-xs text-slate-400">Online</span>
+          <div className="ml-auto flex items-center gap-3">
+            <button
+              onClick={() => setPetraOpen(true)}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#0F172A] text-white text-xs font-bold hover:bg-slate-800 transition-all shadow-sm"
+            >
+              <Phone size={13} />
+              Petra anrufen
+            </button>
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+              <span className="text-xs text-slate-400">Online</span>
+            </div>
           </div>
         </div>
       </div>

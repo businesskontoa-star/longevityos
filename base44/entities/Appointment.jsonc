@@ -1,0 +1,49 @@
+{
+  "name": "Appointment",
+  "type": "object",
+  "properties": {
+    "patient_name": {
+      "type": "string",
+      "title": "Patient Name"
+    },
+    "patient_email": {
+      "type": "string",
+      "title": "Patient Email"
+    },
+    "appointment_date": {
+      "type": "string",
+      "title": "Date"
+    },
+    "appointment_time": {
+      "type": "string",
+      "title": "Time"
+    },
+    "appointment_type": {
+      "type": "string",
+      "title": "Type"
+    },
+    "clinic": {
+      "type": "string",
+      "title": "Clinic"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "confirmed",
+        "cancelled",
+        "completed"
+      ],
+      "default": "confirmed"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Notes"
+    }
+  },
+  "required": [
+    "patient_name",
+    "appointment_date",
+    "appointment_time"
+  ]
+}

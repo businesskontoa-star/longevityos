@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { mockPatient } from '@/lib/mockData';
-import { CheckCircle2, Clock, Calendar, FlaskConical, Star, AlertCircle } from 'lucide-react';
+import { CheckCircle2, Clock, Calendar, AlertCircle } from 'lucide-react';
+import ScheduleModal from '@/components/ScheduleModal';
 import { cn } from '@/lib/utils';
 
 const milestoneConfig = {
@@ -10,6 +12,7 @@ const milestoneConfig = {
 
 export default function Journey() {
   const p = mockPatient;
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const today = new Date();
   const daysSinceVisit = Math.floor((today - new Date(p.lastVisit)) / 86400000);
   const daysToNext = Math.max(0, Math.ceil((new Date(p.nextMilestoneDate) - today) / 86400000));
@@ -47,13 +50,20 @@ export default function Journey() {
               <p className="text-sm text-slate-500 mt-1 leading-relaxed">
                 Your HbA1c and LDL require regular monitoring in a diabetic patient. Your care team at Centrum Health recommends scheduling your HbA1c recheck and LDL management review.
               </p>
-              <button className="mt-3 px-4 py-2 rounded-lg bg-amber-400 text-white text-sm font-bold hover:bg-amber-500 transition-all">
-                Book follow-up at Centrum Health
+              <button onClick={() => setScheduleOpen(true)} className="mt-3 px-4 py-2 rounded-lg bg-amber-400 text-white text-sm font-bold hover:bg-amber-500 transition-all">
+                Termin buchen bei Centrum Health
               </button>
             </div>
           </div>
         </div>
       )}
+
+      <ScheduleModal
+        isOpen={scheduleOpen}
+        onClose={() => setScheduleOpen(false)}
+        title="Follow-up Konsultation"
+        type="followup"
+      />
 
       {/* Timeline */}
       <div>
